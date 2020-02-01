@@ -1,0 +1,104 @@
+<ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
+
+  <ngb-panel id="custom-panel-1">
+    <ng-template ngbPanelHeader let-opened="opened">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="btn-group btn-group-toggle">
+          <label class="btn-primary" ngbButtonLabel style="margin:5px;">
+            <input (change) = "onVehicleChange()" type="checkbox" ngbButton [(ngModel)]="obj.cars">  Vehicles
+          </label>
+
+            <div *ngIf="obj.cars" class="btn-group mr-3">
+              <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <button  class="btn btn-outline-primary" ngbDropdownToggle>Charge level {{chargeLevelList[chargeLevel].label}}</button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                  <button (click) = "onClickDD(0)" ngbDropdownItem>all</button>
+                  <button (click) = "onClickDD(1)" ngbDropdownItem>more than 10%</button>
+                  <button (click) = "onClickDD(2)" ngbDropdownItem>more than 30%</button>
+                  <button (click) = "onClickDD(3)" ngbDropdownItem>more than 50%</button>
+                  <button (click) = "onClickDD(4)" ngbDropdownItem>more than 70%</button>
+                  <button (click) = "onClickDD(5)" ngbDropdownItem>more than 90%</button>
+                </div>
+              </div>
+              <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <button class="btn btn-outline-primary" ngbDropdownToggle>Availability {{availabilityList[vehicleAvailability].label}}</button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                  <button (click)  = "onClickVehicleAvailability(0)" ngbDropdownItem>all</button>
+                  <button (click)  = "onClickVehicleAvailability(1)" ngbDropdownItem>available</button>
+                  <button (click)  = "onClickVehicleAvailability(2)" ngbDropdownItem>unavailable</button>
+                </div>
+              </div>
+              <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <button (click) = "onApplyCarClick()" class="btn btn-primary" ngbButtonLabel>Apply</button>
+              </div>
+            </div>
+
+          <label class="btn-primary" ngbButtonLabel style="margin:5px;">
+            <input (change) = "onPoiChange()" type="checkbox" ngbButton [(ngModel)]="obj.pois"> POIs
+          </label>
+
+          <label class="btn-primary" ngbButtonLabel style="margin:5px;">
+            <input (change) = "onParkingChange()" type="checkbox" ngbButton [(ngModel)]="obj.parkings"> Parkings
+          </label>    
+          
+          <div *ngIf="obj.parkings" class="btn-group mr-3">
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+              <button class="btn btn-outline-primary" ngbDropdownToggle>Availability {{availabilityList[parkingAvailability].label}}</button>
+              <div class="dropdown-menu" ngbDropdownMenu>
+                <button (click)  = "onClickParkingAvailability(0)" ngbDropdownItem>all</button>
+                <button (click)  = "onClickParkingAvailability(1)" ngbDropdownItem>available</button>
+                <button (click)  = "onClickParkingAvailability(2)" ngbDropdownItem>unavailable</button>
+              </div>
+            </div>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+              <button (click) = "onApplyLotClick()" class="btn btn-primary" ngbButtonLabel>Apply</button>
+            </div>
+          </div>
+        </div>
+        
+        
+
+      </div>
+    </ng-template>
+
+    <ng-template ngbPanelContent>
+      
+      <google-map
+      height={{innerHeight}}
+      width="100%"
+      [center]="center"
+      [zoom]=8
+    >
+        <map-info-window> 
+          <div class="container">
+            <div class="row">
+              <div class="col-md-2 col-sm-1 col-lg-2">
+                <div class="row"><p class="h5">{{infoContent.info5}}</p></div>
+                <div class="row"><img src={{infoContent.bIco}}></div>
+                <div class="row"><p class="h6">{{infoContent.info1}}</p></div>
+                <div class="row"><p class="h6">{{infoContent.info2}}</p></div>
+              </div>
+              <div class="col-md-2 col-sm-1 col-lg-2">
+                <img src={{infoContent.image}}>
+              </div>
+             
+            </div>
+          </div>        
+        </map-info-window>
+    
+        <map-marker
+            #markerElem
+            *ngFor="let marker of markers"
+            [position]="marker.position"
+            [label]="marker.label"
+            [title]="marker.title"
+            [options]="marker.options"
+            (mapClick)="openInfo(markerElem, marker.html )"
+        >
+      </map-marker>
+    </google-map>
+
+    </ng-template>
+  </ngb-panel>
+  
+</ngb-accordion>
